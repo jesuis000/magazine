@@ -9,7 +9,7 @@ COPY magazine/pom.xml .
 COPY magazine/.mvn .mvn
 COPY magazine/mvnw .
 COPY magazine/src src
-RUN chmod +x mvnw && ./mvnw clean package -DskipTests
+RUN chmod +x mvnw && ./mvnw -B clean package -DskipTests
 
 FROM eclipse-temurin:21-jre
 WORKDIR /app
