@@ -1,28 +1,29 @@
-import { useState } from 'react'
-import { useCartStore } from '../store/cartStore'
+import {useState} from 'react'
+import {useCartStore} from '../store/cartStore'
 import QuantityKeypadModal from './QuantityKeypadModal'
 
-function ProductCard({ product }) {
+function ProductCard({product}) {
     const [modalOpen, setModalOpen] = useState(false)
     const [imagePreviewOpen, setImagePreviewOpen] = useState(false)
     const [isZooming, setIsZooming] = useState(false)
-    const [zoomPos, setZoomPos] = useState({ x: 50, y: 50 })
+    const [zoomPos, setZoomPos] = useState({x: 50, y: 50})
     const qty = useCartStore((s) => s.getQty(product.id))
     const setQty = useCartStore((s) => s.setQty)
 
     const hasDiscount = product.discountPrice != null
 
     const handleMouseMove = (e) => {
-        const { left, top, width, height } = e.currentTarget.getBoundingClientRect()
+        const {left, top, width, height} = e.currentTarget.getBoundingClientRect()
         const x = ((e.clientX - left) / width) * 100
         const y = ((e.clientY - top) / height) * 100
-        setZoomPos({ x, y })
+        setZoomPos({x, y})
     }
 
     return (
         <div className="border border-gray-200 rounded-lg p-2.5 relative">
             {hasDiscount && (
-                <span className="absolute top-2 right-2 bg-red-600 text-white text-[10px] font-bold rounded px-1.5 py-0.5">
+                <span
+                    className="absolute top-2 right-2 bg-red-600 text-white text-[10px] font-bold rounded px-1.5 py-0.5">
                     SALE
                 </span>
             )}
@@ -36,7 +37,7 @@ function ProductCard({ product }) {
                     className="aspect-square rounded-lg bg-gray-50 flex items-center justify-center mb-2 overflow-hidden cursor-zoom-in p-2"
                 >
                     {product.image ? (
-                        <img src={product.image} alt={product.name} className="max-w-full max-h-full object-contain" />
+                        <img src={product.image} alt={product.name} className="max-w-full max-h-full object-contain"/>
                     ) : (
                         <span className="text-gray-400 text-xs">product photo</span>
                     )}
@@ -72,13 +73,15 @@ function ProductCard({ product }) {
             </div>
 
             <div className="flex items-center justify-between bg-[#0d4d43] rounded-md h-9 text-white overflow-hidden">
-                <button onClick={() => setQty(product, Math.max(0, qty - 1))} className="w-9 h-full flex items-center justify-center text-lg">
+                <button onClick={() => setQty(product, Math.max(0, qty - 1))}
+                        className="w-9 h-full flex items-center justify-center text-lg">
                     −
                 </button>
                 <button onClick={() => setModalOpen(true)} className="font-bold font-mono flex-1 text-center">
                     {qty}
                 </button>
-                <button onClick={() => setQty(product, qty + 1)} className="w-9 h-full flex items-center justify-center text-lg">
+                <button onClick={() => setQty(product, qty + 1)}
+                        className="w-9 h-full flex items-center justify-center text-lg">
                     +
                 </button>
             </div>
@@ -114,7 +117,15 @@ function ProductCard({ product }) {
                             alt={product.name}
                             className="max-w-full max-h-[75%] object-contain"
                         />
-                        <p className="mt-3 text-sm font-bold text-center">{product.name}</p>
+                        <div className="mt-3 max-w-xs mx-auto text-center">
+                            <p className="text-sm font-bold text-gray-900">{product.name}</p>
+
+                            {product.description && (
+                                <p className="mt-1.5 text-[13px] text-gray-500 leading-relaxed text-right">
+                                    {product.description}
+                                </p>
+                            )}
+                        </div>
                     </div>
                 </div>
             )}

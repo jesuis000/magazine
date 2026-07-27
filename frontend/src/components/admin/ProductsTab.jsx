@@ -1,25 +1,25 @@
-import { useState } from 'react'
-import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query'
-import { fetchProducts } from '../../api/products'
-import { fetchCategories } from '../../api/categories'
-import { createProduct, updateProduct, deleteProduct } from '../../api/admin'
+import {useState} from 'react'
+import {useQuery, useMutation, useQueryClient} from '@tanstack/react-query'
+import {fetchProducts} from '../../api/products'
+import {fetchCategories} from '../../api/categories'
+import {createProduct, updateProduct, deleteProduct} from '../../api/admin'
 
-const emptyForm = { name: '', unitLabel: '', price: '', discountPrice: '', image: '', categoryId: '' }
+const emptyForm = {name: '', unitLabel: '', price: '', discountPrice: '', image: '', categoryId: '', description: ''}
 
-function ProductsTab({ storeSlug }) {
+function ProductsTab({storeSlug}) {
     const queryClient = useQueryClient()
-    const { data: products } = useQuery({
+    const {data: products} = useQuery({
         queryKey: ['products', storeSlug, 'all'],
         queryFn: () => fetchProducts(storeSlug),
     })
-    const { data: categories } = useQuery({
+    const {data: categories} = useQuery({
         queryKey: ['categories', storeSlug],
         queryFn: () => fetchCategories(storeSlug),
     })
 
     const [form, setForm] = useState(emptyForm)
 
-    const invalidate = () => queryClient.invalidateQueries({ queryKey: ['products', storeSlug] })
+    const invalidate = () => queryClient.invalidateQueries({queryKey: ['products', storeSlug]})
 
     const addMutation = useMutation({
         mutationFn: () => createProduct(storeSlug, {
@@ -29,11 +29,14 @@ function ProductsTab({ storeSlug }) {
             categoryId: parseInt(form.categoryId, 10),
             sortOrder: 0,
         }),
-        onSuccess: () => { setForm(emptyForm); invalidate() },
+        onSuccess: () => {
+            setForm(emptyForm);
+            invalidate()
+        },
     })
 
     const updateMutation = useMutation({
-        mutationFn: ({ id, data }) => updateProduct(storeSlug, id, data),
+        mutationFn: ({id, data}) => updateProduct(storeSlug, id, data),
         onSuccess: invalidate,
     })
 
@@ -49,15 +52,33 @@ function ProductsTab({ storeSlug }) {
             <div className="border border-gray-200 rounded-lg p-4 mb-6">
                 <div className="font-bold text-sm mb-3">إضافة منتج جديد</div>
                 <div className="grid grid-cols-2 gap-2 mb-2">
-                    <input placeholder="اسم المنتج" value={form.name} onChange={(e) => setForm({ ...form, name: e.target.value })} className="border border-gray-200 rounded-lg h-9 px-2 text-sm col-span-2" />
-                    <input placeholder="الوزن/الحجم" value={form.unitLabel} onChange={(e) => setForm({ ...form, unitLabel: e.target.value })} className="border border-gray-200 rounded-lg h-9 px-2 text-sm" />
-                    <select value={form.categoryId} onChange={(e) => setForm({ ...form, categoryId: e.target.value })} className="border border-gray-200 rounded-lg h-9 px-2 text-sm">
+                    <input placeholder="اسم المنتج" value={form.name}
+                           onChange={(e) => setForm({...form, name: e.target.value})}
+                           className="border border-gray-200 rounded-lg h-9 px-2 text-sm col-span-2"/>
+                    <input placeholder="الوزن/الحجم" value={form.unitLabel}
+                           onChange={(e) => setForm({...form, unitLabel: e.target.value})}
+                           className="border border-gray-200 rounded-lg h-9 px-2 text-sm"/>
+                    <select value={form.categoryId} onChange={(e) => setForm({...form, categoryId: e.target.value})}
+                            className="border border-gray-200 rounded-lg h-9 px-2 text-sm">
                         <option value="">اختر القسم</option>
                         {categories?.map((c) => <option key={c.id} value={c.id}>{c.name}</option>)}
                     </select>
-                    <input placeholder="السعر" type="number" value={form.price} onChange={(e) => setForm({ ...form, price: e.target.value })} className="border border-gray-200 rounded-lg h-9 px-2 text-sm" />
-                    <input placeholder="سعر التخفيض (اختياري)" type="number" value={form.discountPrice} onChange={(e) => setForm({ ...form, discountPrice: e.target.value })} className="border border-gray-200 rounded-lg h-9 px-2 text-sm" />
-                    <input placeholder="رابط الصورة" value={form.image} onChange={(e) => setForm({ ...form, image: e.target.value })} className="border border-gray-200 rounded-lg h-9 px-2 text-sm col-span-2" />
+                    <input placeholder="السعر" type="number" value={form.price}
+                           onChange={(e) => setForm({...form, price: e.target.value})}
+                           className="border border-gray-200 rounded-lg h-9 px-2 text-sm"/>
+                    <input placeholder="سعر التخفيض (اختياري)" type="number" value={form.discountPrice}
+                           onChange={(e) => setForm({...form, discountPrice: e.target.value})}
+                           className="border border-gray-200 rounded-lg h-9 px-2 text-sm"/>
+                    <input placeholder="رابط الصورة" value={form.image}
+                           onChange={(e) => setForm({...form, image: e.target.value})}
+                           className="border border-gray-200 rounded-lg h-9 px-2 text-sm col-span-2"/>
+                    <textarea
+                        placeholder="وصف المنتج (اختياري)"
+                        value={form.description}
+                        onChange={(e) => setForm({ ...form, description: e.target.value })}
+                        rows={2}
+                        className="border border-gray-200 rounded-lg px-2 py-1.5 text-sm col-span-2 resize-none"
+                    />
                 </div>
                 <button
                     onClick={() => addMutation.mutate()}
@@ -76,10 +97,13 @@ function ProductsTab({ storeSlug }) {
                                 src={p.image}
                                 alt=""
                                 className="w-12 h-12 object-cover rounded bg-gray-100 shrink-0"
-                                onError={(e) => { e.target.style.opacity = 0.2 }}
+                                onError={(e) => {
+                                    e.target.style.opacity = 0.2
+                                }}
                             />
                         ) : (
-                            <div className="w-12 h-12 rounded bg-gray-100 shrink-0 flex items-center justify-center text-gray-300 text-[9px]">
+                            <div
+                                className="w-12 h-12 rounded bg-gray-100 shrink-0 flex items-center justify-center text-gray-300 text-[9px]">
                                 لا صورة
                             </div>
                         )}
@@ -91,7 +115,10 @@ function ProductsTab({ storeSlug }) {
                         <input
                             type="number"
                             defaultValue={p.price}
-                            onBlur={(e) => updateMutation.mutate({ id: p.id, data: { ...p, price: parseFloat(e.target.value) } })}
+                            onBlur={(e) => updateMutation.mutate({
+                                id: p.id,
+                                data: {...p, price: parseFloat(e.target.value)}
+                            })}
                             className="w-20 border border-gray-200 rounded-lg h-8 px-2"
                         />
                         <button onClick={() => deleteMutation.mutate(p.id)} className="text-red-500 font-bold px-2">
