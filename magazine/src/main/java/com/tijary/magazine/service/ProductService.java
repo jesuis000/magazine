@@ -60,6 +60,7 @@ public class ProductService {
 
 
         p.setName(updates.getName());
+        p.setDescription(updates.getDescription());   // ← add this
         p.setImage(updates.getImage());
         p.setUnitLabel(updates.getUnitLabel());
         p.setPrice(updates.getPrice());

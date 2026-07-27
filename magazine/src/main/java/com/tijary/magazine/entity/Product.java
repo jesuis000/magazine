@@ -25,6 +25,9 @@ public class Product {
     @Column(nullable = false)
     private String name;
 
+    @Column(columnDefinition = "TEXT")
+    private String description;   // ← add this
+
     private String image;
 
     private String unitLabel; // e.g. "180 جم"
