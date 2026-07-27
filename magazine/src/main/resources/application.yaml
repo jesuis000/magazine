@@ -1,17 +1,30 @@
 spring:
   application:
     name: magazine
+
+#  datasource:
+#    url: jdbc:sqlite:data/app.db
+#    driver-class-name: org.sqlite.JDBC
+#  jpa:
+#    database-platform: org.hibernate.community.dialect.SQLiteDialect
+#    hibernate:
+#      ddl-auto: update
+#    show-sql: false
+
   datasource:
-    url: jdbc:sqlite:data/app.db
-    driver-class-name: org.sqlite.JDBC
+    url: ${DATABASE_URL}
+    username: ${DATABASE_USERNAME}
+    password: ${DATABASE_PASSWORD}
+    driver-class-name: org.postgresql.Driver
+
   jpa:
-    database-platform: org.hibernate.community.dialect.SQLiteDialect
+    database-platform: org.hibernate.dialect.PostgreSQLDialect
     hibernate:
       ddl-auto: update
     show-sql: false
 
 server:
-  port: 8080
+  port: ${PORT:8080}
 
 app:
   jwt:

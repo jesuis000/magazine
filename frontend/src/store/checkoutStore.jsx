@@ -18,6 +18,9 @@ export const useCheckoutStore = create((set) => ({
     submitting: false,
     submitError: null,
 
+    orderSubmitted: false,
+    lastOrderId: null,
+
     setNotesText: (text) => set({notesText: text}),
     setVoiceNoteUrl: (url) => set({voiceNoteUrl: url}),
     clearVoiceNote: () => set({voiceNoteUrl: null}),
@@ -33,6 +36,12 @@ export const useCheckoutStore = create((set) => ({
     setSubmitting: (v) => set({submitting: v}),
     setSubmitError: (err) => set({submitError: err}),
 
+    setOrderSubmitted: (orderId) => set({orderSubmitted: true, lastOrderId: orderId}),
+    clearOrderSubmitted: () => set({orderSubmitted: false, lastOrderId: null}),
+
+    // NOTE: reset() intentionally does NOT touch orderSubmitted/lastOrderId —
+    // it's called right after a successful submit, and we need those to survive
+    // until the user closes the success screen (clearOrderSubmitted does that).
     reset: () => set({
         notesText: '', voiceNoteUrl: null,
         phone: '', name: '', area: '', address: '', email: '', rememberMe: true,

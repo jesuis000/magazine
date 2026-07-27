@@ -64,8 +64,9 @@ function PaymentAndSubmit() {
         setSubmitting(true)
         setSubmitError(null)
 
+        let result
         try {
-            await submitOrder(storeSlug, {
+            result = await submitOrder(storeSlug, {
                 phone: checkout.phone,
                 name: checkout.name,
                 area: checkout.area,
@@ -86,6 +87,7 @@ function PaymentAndSubmit() {
         }
 
         setSubmitting(false)
+        useCheckoutStore.getState().setOrderSubmitted(result.id)
         try {
             clearCart()
             resetCheckout()

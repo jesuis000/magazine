@@ -1,16 +1,19 @@
 import { useState } from 'react'
 import { useCartStore } from '../store/cartStore'
+import { useCheckoutStore } from '../store/checkoutStore'
 import QuantityKeypadModal from './QuantityKeypadModal'
 import NotesSection from './NotesSection'
 import CustomerInfoForm from './CustomerInfoForm'
 import DeliveryOptions from './DeliveryOptions'
 import PaymentAndSubmit from './PaymentAndSubmit'
+import OrderSuccess from './OrderSuccess'
 
 const DELIVERY_FEE = 10 // TODO: move to store config once that's modeled
 
 function CartSummary({ onClose }) {
     const items = useCartStore((s) => s.items)
     const setQty = useCartStore((s) => s.setQty)
+    const orderSubmitted = useCheckoutStore((s) => s.orderSubmitted)
     const [editingProduct, setEditingProduct] = useState(null)
 
     const itemList = Object.values(items)
@@ -43,8 +46,10 @@ function CartSummary({ onClose }) {
                 <div className="p-4">
                     <button onClick={onClose} className="text-blue-600 text-sm mb-2">إغلاق ✕</button>
 
-                    {itemCount === 0 ? (
-                        <p className="text-gray-400 text-center py-8">تم ارسال طلبك بنجاح</p>
+                    {orderSubmitted ? (
+                        <OrderSuccess onClose={onClose} />
+                    ) : itemCount === 0 ? (
+                        <p className="text-gray-400 text-center py-8">السلة فارغة</p>
                     ) : (
                         <>
                             <table className="w-full text-[11.5px]">
