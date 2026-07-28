@@ -1,4 +1,4 @@
-import { useParams } from 'react-router-dom'
+import { useParams, Link } from 'react-router-dom'
 import { useQuery } from '@tanstack/react-query'
 import { fetchStore } from '../api/stores'
 import { fetchBanners } from '../api/banners'
@@ -48,12 +48,14 @@ function CatalogHome() {
         <div dir="rtl" className="min-h-screen bg-gray-50">
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                 <header className="flex flex-row items-center justify-between gap-3 py-4 md:py-6 text-right">
-                    <div>
+                    <Link to="/" className="block">
                         <h1 className="text-lg sm:text-xl md:text-3xl font-extrabold" style={{ color: store.themeColor }}>
                             مجلة {store.name}
                         </h1>
-                        <p className="text-[11px] sm:text-xs md:text-sm text-gray-400">صفحه العروض والتخفيضات</p>
-                    </div>
+                        <p className="text-[11px] sm:text-xs md:text-sm text-gray-400 flex items-center gap-1">
+                            <span>←</span> كل المتاجر
+                        </p>
+                    </Link>
 
                     {store.logoUrl ? (
                         <img

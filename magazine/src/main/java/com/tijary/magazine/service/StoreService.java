@@ -1,11 +1,14 @@
 package com.tijary.magazine.service;
 
+import com.tijary.magazine.controller.StoreController;
+import com.tijary.magazine.dto.StoreSummary;
 import com.tijary.magazine.entity.Store;
 import com.tijary.magazine.repository.StoreRepository;
 import com.tijary.magazine.security.AdminAccessGuard;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -23,6 +26,11 @@ public class StoreService {
         return storeRepository.findBySlug(slug);
     }
 
+    public List<StoreSummary> listPublicStores() {
+        return storeRepository.findAll().stream()
+                .map(s -> new StoreSummary(s.getId(), s.getSlug(), s.getName(), s.getLogoUrl(), s.getThemeColor()))
+                .toList();
+    }
 
     @Transactional
     public Store updateStore(String slug, Store updates) {

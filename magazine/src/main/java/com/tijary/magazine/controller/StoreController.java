@@ -1,12 +1,13 @@
 package com.tijary.magazine.controller;
 
+import com.tijary.magazine.dto.StoreSummary;
 import com.tijary.magazine.entity.Store;
-import com.tijary.magazine.repository.StoreRepository;
 import com.tijary.magazine.security.AdminAccessGuard;
 import com.tijary.magazine.service.StoreService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 import java.util.Map;
 
 @RestController
@@ -18,6 +19,11 @@ public class StoreController {
     StoreController(StoreService storeService, AdminAccessGuard adminAccessGuard) {
         this.storeService = storeService;
         this.adminAccessGuard = adminAccessGuard;
+    }
+
+    @GetMapping
+    public ResponseEntity<List<StoreSummary>> listStores() {
+        return ResponseEntity.ok(storeService.listPublicStores());
     }
 
     @GetMapping("/{slug}")

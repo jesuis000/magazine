@@ -4,11 +4,13 @@ import AdminPage from './pages/AdminPage.jsx'
 import LoginPage from './pages/LoginPage'
 import PlatformDashboard from './pages/PlatformDashboard'
 import ProtectedRoute from './components/ProtectedRoute'
+import StoresListPage from './pages/StoresListPage'
 
 function App() {
     return (
         <BrowserRouter>
             <Routes>
+                <Route path="/" element={<StoresListPage />} />
                 <Route path="/login" element={<LoginPage />} />
                 <Route path="/admin" element={
                     <ProtectedRoute requireSuperAdmin>
@@ -21,7 +23,7 @@ function App() {
                         <AdminPage />
                     </ProtectedRoute>
                 } />
-                <Route path="*" element={<Navigate to="/myMarket" replace />} />
+                <Route path="*" element={<Navigate to="/" replace />} />
             </Routes>
         </BrowserRouter>
     )
