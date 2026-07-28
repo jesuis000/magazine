@@ -49,7 +49,7 @@ function CreateStorePage() {
                 <input
                     value={form.name}
                     onChange={update('name')}
-                    placeholder="زاهر Fresh Food Market"
+                    placeholder="متجرى My Store Name"
                     className="w-full border border-gray-200 rounded-lg h-10 px-3 text-sm mb-3"
                 />
 

@@ -46,7 +46,7 @@ public class DataSeeder implements CommandLineRunner {
         if (this.storeRepository.findBySlug("myMarket").isEmpty()) {
             Store store = new Store();
             store.setSlug("myMarket");
-            store.setName("زاهر Fresh Food Market");
+            store.setName("Fresh Food Market");
             store.setThemeColor("#0d4d43");
             store.setCurrency("EGP");
             store.setPhone("19360");
