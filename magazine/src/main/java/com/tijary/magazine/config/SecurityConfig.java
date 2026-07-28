@@ -73,13 +73,19 @@ public class SecurityConfig {
     @Bean
     public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration config = new CorsConfiguration();
-        config.setAllowedOrigins(List.of("http://localhost:5173"));
+        config.setAllowedOrigins(List.of(
+                "http://localhost:5173",
+                "https://magazine-production-fb42.up.railway.app"
+        ));
         config.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE"));
         config.setAllowedHeaders(List.of("*"));
         config.setAllowCredentials(true); // required for cookies to be sent cross-request
 
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
-        source.registerCorsConfiguration("/**", config);
+        // Scope this to the API only — static assets (index.html, /assets/**) are same-origin
+        // and must never be subject to CORS origin checks, or module-script/style requests
+        // (which the browser sends with an Origin header even same-origin) get wrongly 403'd.
+        source.registerCorsConfiguration("/api/**", config);
         return source;
     }
 }
