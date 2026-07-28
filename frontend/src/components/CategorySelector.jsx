@@ -6,7 +6,7 @@ function CategorySelector({ categories, activeCategoryId, onSelect }) {
     const singleCategory = categories.length === 1
 
     return (
-        <div className="space-y-2 mt-4">
+        <div className="flex flex-row-reverse flex-wrap justify-center gap-4 sm:gap-6 mt-4">
             {categories.map((cat, i) => (
                 <CategorySlice
                     key={cat.id}

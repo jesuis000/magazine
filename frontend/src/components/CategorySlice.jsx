@@ -1,46 +1,41 @@
 const FALLBACK_PALETTE = ['#e4a11b', '#17c3c3', '#a855f7', '#84cc16', '#f472b6', '#38bdf8']
+const ACTIVE_COLOR = '#16a34a' // green highlight for the selected category
 
 function CategorySlice({ category, index, isActive, onClick, clickable }) {
-    const bg = category.color || FALLBACK_PALETTE[index % FALLBACK_PALETTE.length]
+    const tint = category.color || FALLBACK_PALETTE[index % FALLBACK_PALETTE.length]
 
     return (
         <button
             onClick={clickable ? onClick : undefined}
             disabled={!clickable}
-            className={`relative w-full h-24 sm:h-28 md:h-32 rounded-lg overflow-hidden transition-all ${
-                isActive ? 'opacity-100' : 'opacity-90 hover:opacity-100'
+            className={`flex flex-col items-center justify-center gap-1.5 shrink-0 w-20 sm:w-24 py-3 rounded-2xl border transition-all ${
+                isActive
+                    ? 'text-white shadow-sm'
+                    : 'bg-white border-gray-200 text-gray-700 hover:border-gray-300'
             } ${clickable ? 'cursor-pointer' : 'cursor-default'}`}
-            style={{ backgroundColor: bg }}
+            style={isActive ? { backgroundColor: ACTIVE_COLOR, borderColor: ACTIVE_COLOR } : undefined}
         >
-            {category.bannerImage && (
-                <img
-                    src={category.bannerImage}
-                    alt=""
-                    className="absolute inset-0 w-full h-full object-cover"
-                    onError={(e) => { e.target.style.display = 'none' }}
-                />
-            )}
-
-            {/* Gradient overlay: strong near the text (right, in RTL), fading toward the image */}
             <div
-                className="absolute inset-0"
-                style={{ background: `linear-gradient(to left, ${bg}ee 25%, ${bg}55 55%, transparent 100%)` }}
-            />
-
-            <div className="relative z-10 h-full flex items-center justify-between px-5">
-        <span className="font-extrabold text-base md:text-xl text-white drop-shadow-sm">
-          {category.name}
-        </span>
-                {clickable && (
-                    <span className={`text-white text-lg transition-transform ${isActive ? 'rotate-90' : ''}`}>
-            ‹
-          </span>
+                className="w-10 h-10 sm:w-12 sm:h-12 rounded-full flex items-center justify-center overflow-hidden"
+                style={{ backgroundColor: isActive ? 'rgba(255,255,255,0.2)' : `${tint}22` }}
+            >
+                {category.bannerImage ? (
+                    <img
+                        src={category.bannerImage}
+                        alt=""
+                        className="w-full h-full object-cover"
+                        onError={(e) => { e.target.style.display = 'none' }}
+                    />
+                ) : (
+                    <span className="text-lg font-extrabold" style={{ color: isActive ? '#fff' : tint }}>
+                        {category.name?.charAt(0)}
+                    </span>
                 )}
             </div>
 
-            {isActive && (
-                <div className="absolute inset-0 ring-2 ring-white ring-inset rounded-lg pointer-events-none" />
-            )}
+            <span className="text-[11px] sm:text-xs font-bold text-center leading-tight px-1">
+                {category.name}
+            </span>
         </button>
     )
 }
