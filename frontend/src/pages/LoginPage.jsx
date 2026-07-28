@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { useNavigate } from 'react-router-dom'
+import {Link, useNavigate} from 'react-router-dom'
 import { useAuthStore } from '../store/authStore'
 
 function LoginPage() {
@@ -51,6 +51,13 @@ function LoginPage() {
                 >
                     {submitting ? 'جاري الدخول...' : 'دخول'}
                 </button>
+
+                <Link to="/" className="block text-xs font-bold mb-1 mt-4">
+                    <p className="text-[11px] sm:text-xs md:text-sm text-gray-400 flex items-center gap-1">
+                        <span>←</span> كل المتاجر
+                    </p>
+                </Link>
+
             </form>
         </div>
     )
