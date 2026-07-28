@@ -17,7 +17,7 @@ public class Banner {
     @Column(nullable = false)
     private Long storeId;
 
-    @Column(nullable = false)
+    @Column(columnDefinition = "TEXT")
     private String imageUrl;
 
     private String linkUrl; // optional — where tapping the banner goes (e.g. a category)

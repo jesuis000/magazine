@@ -2,14 +2,14 @@ spring:
   application:
     name: magazine
 
-#  datasource:
-#    url: jdbc:sqlite:data/app.db
-#    driver-class-name: org.sqlite.JDBC
-#  jpa:
-#    database-platform: org.hibernate.community.dialect.SQLiteDialect
-#    hibernate:
-#      ddl-auto: update
-#    show-sql: false
+  #  datasource:
+  #    url: jdbc:sqlite:data/app.db
+  #    driver-class-name: org.sqlite.JDBC
+  #  jpa:
+  #    database-platform: org.hibernate.community.dialect.SQLiteDialect
+  #    hibernate:
+  #      ddl-auto: update
+  #    show-sql: false
 
   datasource:
     url: ${DATABASE_URL}
@@ -34,3 +34,13 @@ app:
   bootstrap-admin:
     email: ${ADMIN_EMAIL}
     password: ${ADMIN_PASSWORD}
+
+logging:
+  level:
+    root: INFO
+    com.tijary.magazine: DEBUG
+    org.springframework.web: INFO
+    org.hibernate.SQL: INFO
+    # temporarily flip these to DEBUG when actively chasing an issue, then set back to INFO:
+    # org.springframework.security: DEBUG
+    # org.hibernate.SQL: DEBUG

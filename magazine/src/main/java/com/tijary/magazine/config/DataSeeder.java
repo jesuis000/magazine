@@ -57,13 +57,13 @@ public class DataSeeder implements CommandLineRunner {
         if (bannerRepository.findByStoreIdOrderBySortOrderAsc(store.getId()).isEmpty()) {
             Banner b1 = new Banner();
             b1.setStoreId(store.getId());
-            b1.setImageUrl("/images/banners/myMarket-ban-one.png");
+//            b1.setImageUrl("/images/banners/myMarket-ban-one.png");
             b1.setSortOrder(0);
             bannerRepository.save(b1);
 
             Banner b2 = new Banner();
             b2.setStoreId(store.getId());
-            b2.setImageUrl("/images/banners/myMarket-ban-two.png");
+//            b2.setImageUrl("/images/banners/myMarket-ban-two.png");
             b2.setSortOrder(1);
             bannerRepository.save(b2);
         }
@@ -72,7 +72,7 @@ public class DataSeeder implements CommandLineRunner {
             Category canned = new Category();
             canned.setStoreId(store.getId());
             canned.setName("معلبات");
-            canned.setBannerImage("/images/categories/canned-goods.jpg");
+//            canned.setBannerImage("/images/categories/canned-goods.jpg");
             canned.setSortOrder(0);
             categoryRepository.save(canned);
 
@@ -82,7 +82,7 @@ public class DataSeeder implements CommandLineRunner {
             p1.setName("هاينز مايونيز برطمان 180جم");
             p1.setUnitLabel("180 جم");
             p1.setPrice(new BigDecimal("20.00"));
-            p1.setImage("/images/products/heinz-mayo.jpg");
+//            p1.setImage("/images/products/heinz-mayo.jpg");
             p1.setSortOrder(0);
             productRepository.save(p1);
 
@@ -93,7 +93,7 @@ public class DataSeeder implements CommandLineRunner {
             p2.setUnitLabel("360 جم");
             p2.setPrice(new BigDecimal("15.00"));
             p2.setDiscountPrice(new BigDecimal("13.00")); // matches the "SALE" badge concept
-            p2.setImage("/images/products/heinz-sauce.jpg");
+//            p2.setImage("/images/products/heinz-sauce.jpg");
             p2.setSortOrder(1);
             productRepository.save(p2);
 
@@ -103,7 +103,7 @@ public class DataSeeder implements CommandLineRunner {
             p3.setName("حدائق كاليفورنيا تونة زيت نباتي 185جم");
             p3.setUnitLabel("185 جم");
             p3.setPrice(new BigDecimal("45.00"));
-            p3.setImage("/images/products/tuna.png");
+//            p3.setImage("/images/products/tuna.png");
             p3.setSortOrder(2);
             productRepository.save(p3);
 
@@ -113,7 +113,7 @@ public class DataSeeder implements CommandLineRunner {
             p4.setName("هاينز كاتشب باك 285جم");
             p4.setUnitLabel("285 جم");
             p4.setPrice(new BigDecimal("30.00"));
-            p4.setImage("/images/products/heinz-ketchup.jpg");
+//            p4.setImage("/images/products/heinz-ketchup.jpg");
             p4.setSortOrder(3);
             productRepository.save(p4);
 
@@ -123,7 +123,7 @@ public class DataSeeder implements CommandLineRunner {
             p5.setName("هاينز كاتشب باك 285جم");
             p5.setUnitLabel("285 جم");
             p5.setPrice(new BigDecimal("30.00"));
-            p5.setImage("/images/products/heinz-ketchup.jpg");
+//            p5.setImage("/images/products/heinz-ketchup.jpg");
             p5.setSortOrder(4);
             productRepository.save(p5);
 
@@ -133,7 +133,7 @@ public class DataSeeder implements CommandLineRunner {
             p6.setName("هاينز كاتشب باك 285جم");
             p6.setUnitLabel("285 جم");
             p6.setPrice(new BigDecimal("30.00"));
-            p6.setImage("/images/products/heinz-ketchup.jpg");
+//            p6.setImage("/images/products/heinz-ketchup.jpg");
             p6.setSortOrder(5);
             productRepository.save(p6);
 
@@ -143,7 +143,7 @@ public class DataSeeder implements CommandLineRunner {
             p7.setName("هاينز كاتشب باك 285جم");
             p7.setUnitLabel("285 جم");
             p7.setPrice(new BigDecimal("30.00"));
-            p7.setImage("/images/products/heinz-ketchup.jpg");
+//            p7.setImage("/images/products/heinz-ketchup.jpg");
             p7.setSortOrder(6);
             productRepository.save(p7);
 
@@ -153,7 +153,7 @@ public class DataSeeder implements CommandLineRunner {
             p8.setName("هاينز كاتشب باك 285جم");
             p8.setUnitLabel("285 جم");
             p8.setPrice(new BigDecimal("30.00"));
-            p8.setImage("/images/products/heinz-ketchup.jpg");
+//            p8.setImage("/images/products/heinz-ketchup.jpg");
             p8.setSortOrder(7);
             productRepository.save(p8);
         }
