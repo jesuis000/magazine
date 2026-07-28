@@ -42,7 +42,7 @@ function StoresListPage() {
             </div>
 
             {stores?.length === 0 && (
-                <p className="text-center text-gray-400 mt-10">لا توجد متاجر متاحة حالياً</p>
+                <p className="text-center text-gray-400 mt-10">لا توجد متاجر متاحة فى الوقت الحالى</p>
             )}
         </div>
     )
