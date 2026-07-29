@@ -1,25 +1,21 @@
-const FALLBACK_PALETTE = ['#e4a11b', '#17c3c3', '#a855f7', '#84cc16', '#f472b6', '#38bdf8']
-const ACTIVE_COLOR = '#16a34a' // green highlight for the selected category
+import { LayoutGrid, Package } from 'lucide-react'
 
-function CategorySlice({ category, index, isActive, onClick, clickable }) {
-    const tint = category.color || FALLBACK_PALETTE[index % FALLBACK_PALETTE.length]
-
+function CategorySlice({ category, isActive, onClick, isAll = false }) {
     return (
         <button
-            onClick={clickable ? onClick : undefined}
-            disabled={!clickable}
-            className={`flex flex-col items-center justify-center gap-1.5 shrink-0 w-20 sm:w-24 py-3 rounded-2xl border transition-all ${
-                isActive
-                    ? 'text-white shadow-sm'
-                    : 'bg-white border-gray-200 text-gray-700 hover:border-gray-300'
-            } ${clickable ? 'cursor-pointer' : 'cursor-default'}`}
-            style={isActive ? { backgroundColor: ACTIVE_COLOR, borderColor: ACTIVE_COLOR } : undefined}
+            onClick={onClick}
+            className="flex flex-col items-center gap-1.5 cursor-pointer group"
         >
             <div
-                className="w-10 h-10 sm:w-12 sm:h-12 rounded-full flex items-center justify-center overflow-hidden"
-                style={{ backgroundColor: isActive ? 'rgba(255,255,255,0.2)' : `${tint}22` }}
+                className={`w-16 h-16 sm:w-20 sm:h-20 rounded-full flex items-center justify-center overflow-hidden transition-all ${
+                    isActive
+                        ? 'ring-2 ring-[#0d4d43] shadow-md bg-[#0d4d43]/5'
+                        : 'ring-1 ring-gray-200 bg-white group-hover:ring-gray-300'
+                }`}
             >
-                {category.bannerImage ? (
+                {isAll ? (
+                    <LayoutGrid className="w-7 h-7 text-[#0d4d43]" strokeWidth={1.75} />
+                ) : category.bannerImage ? (
                     <img
                         src={category.bannerImage}
                         alt=""
@@ -27,13 +23,10 @@ function CategorySlice({ category, index, isActive, onClick, clickable }) {
                         onError={(e) => { e.target.style.display = 'none' }}
                     />
                 ) : (
-                    <span className="text-lg font-extrabold" style={{ color: isActive ? '#fff' : tint }}>
-                        {category.name?.charAt(0)}
-                    </span>
+                    <Package className="w-7 h-7 text-gray-400" strokeWidth={1.75} />
                 )}
             </div>
-
-            <span className="text-[11px] sm:text-xs font-bold text-center leading-tight px-1">
+            <span className="text-xs sm:text-sm font-bold text-gray-700 text-center max-w-[80px] leading-tight">
                 {category.name}
             </span>
         </button>

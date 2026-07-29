@@ -44,7 +44,7 @@ function CatalogHome() {
 
     useEffect(() => {
         if (categories?.length && !activeCategoryId) {
-            setActiveCategoryId(categories[0].id)
+            setActiveCategoryId('all')
         }
     }, [categories, activeCategoryId])
 
@@ -72,7 +72,7 @@ function CatalogHome() {
 
     return (
         <div dir="rtl" className="min-h-screen bg-gray-50">
-            <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div className="max-w-[1200px] mx-auto px-4 sm:px-6 lg:px-8">
                 <header className="flex flex-row items-center justify-between gap-3 py-4 md:py-6 text-right">
                     <Link to="/" className="block">
                         <h1 className="text-lg sm:text-xl md:text-3xl font-extrabold" style={{ color: store.themeColor }}>
@@ -108,8 +108,8 @@ function CatalogHome() {
                             type="text"
                             value={searchTerm}
                             onChange={(e) => setSearchTerm(e.target.value)}
-                            placeholder="ابحث عن منتج..."
-                            className="w-full border border-gray-200 rounded-lg h-11 px-4 text-sm focus:outline-none focus:ring-2 focus:ring-gray-300 bg-white"
+                            placeholder="ابحث عن منتج... 🔍"
+                            className="w-full h-11 px-4 bg-white border border-gray-200 rounded-lg text-sm text-gray-800 focus:outline-none focus:border-emerald-600"
                         />
                         {isSearching && (
                             <button
@@ -131,7 +131,7 @@ function CatalogHome() {
                             <p className="text-xs text-gray-400 mt-3">
                                 {searchResults.length} نتيجة لـ «{deferredSearchTerm.trim()}»
                             </p>
-                            <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4 mt-2">
+                            <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 justify-items-center sm:justify-items-stretch">
                                 {searchResults.map((p) => <ProductCard key={p.id} product={p} />)}
                             </div>
                         </>
@@ -159,7 +159,7 @@ function CatalogHome() {
             </div>
 
             <OrderButton onClick={() => setCartOpen(true)} />
-            {cartOpen && <CartSummary onClose={() => setCartOpen(false)} />}
+            {cartOpen && <CartSummary store={store} onClose={() => setCartOpen(false)} />}
 
         </div>
     )

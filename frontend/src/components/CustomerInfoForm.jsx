@@ -1,102 +1,49 @@
-import { useState } from 'react'
 import { useCheckoutStore } from '../store/checkoutStore'
-
-
-const AREAS = ['روكسي', 'مدينة نصر', 'هليوبوليس', 'المعادي'] // placeholder — should come from Store.deliveryZones once it exists
+import { Phone, User, MapPin, Mail } from 'lucide-react'
 
 function CustomerInfoForm() {
-    const [locating, setLocating] = useState(false)
-
     const phone = useCheckoutStore((s) => s.phone)
     const name = useCheckoutStore((s) => s.name)
-    const area = useCheckoutStore((s) => s.area)
     const address = useCheckoutStore((s) => s.address)
     const email = useCheckoutStore((s) => s.email)
     const rememberMe = useCheckoutStore((s) => s.rememberMe)
     const setCustomerField = useCheckoutStore((s) => s.setCustomerField)
-    const setCustomer = useCheckoutStore((s) => s.setCustomer)
 
-    const handlePhoneBlur = async () => {
-        if (!phone) return
-    }
-
-    const useMyLocation = () => {
-        if (!navigator.geolocation) return
-        setLocating(true)
-        navigator.geolocation.getCurrentPosition(
-            async (pos) => {
-                const { latitude, longitude } = pos.coords
-                // Reverse geocoding endpoint TBD — for now just drop coords into address
-                setCustomerField('address', `${latitude.toFixed(5)}, ${longitude.toFixed(5)}`)
-                setLocating(false)
-            },
-            () => setLocating(false)
-        )
-    }
+    const fields = [
+        { icon: Phone, type: 'tel', value: phone, key: 'phone', placeholder: 'رقم موبايل' },
+        { icon: User, type: 'text', value: name, key: 'name', placeholder: 'الاسم' },
+        { icon: MapPin, type: 'text', value: address, key: 'address', placeholder: 'العنوان' },
+        { icon: Mail, type: 'email', value: email, key: 'email', placeholder: 'الايميل' },
+    ]
 
     return (
-        <div dir="rtl" className="mt-4">
-            <div className="flex items-center gap-2 bg-blue-600 text-white rounded-lg px-4 py-3 font-bold mb-3">
-                <span>بيانات الشخصية</span>
+        <div dir="rtl" className="mt-4 border border-gray-200 rounded-xl p-4 bg-white">
+            <p className="font-bold text-sm text-gray-800 mb-3">بيانات التوصيل والشخصية</p>
+
+            <div className="space-y-2.5">
+                {fields.map(({ icon: Icon, type, value, key, placeholder }) => (
+                    <div key={key} className="relative">
+                        <Icon className="absolute right-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400 pointer-events-none" />
+                        <input
+                            dir="rtl"
+                            type={type}
+                            value={value}
+                            onChange={(e) => setCustomerField(key, e.target.value)}
+                            placeholder={placeholder}
+                            className="w-full h-11 border border-gray-200 rounded-lg pr-10 pl-3 text-sm text-gray-800 placeholder-gray-400 text-right placeholder:text-right focus:outline-none focus:border-emerald-600 focus:ring-1 focus:ring-emerald-600 transition-all bg-white"
+                        />
+                    </div>
+                ))}
             </div>
 
-            <input
-                type="tel"
-                value={phone}
-                onChange={(e) => setCustomerField('phone', e.target.value)}
-                onBlur={handlePhoneBlur}
-                placeholder="رقم موبيل"
-                className="w-full border border-gray-200 rounded-lg p-3 text-sm mb-2"
-            />
-
-            <input
-                type="text"
-                value={name}
-                onChange={(e) => setCustomerField('name', e.target.value)}
-                placeholder="الاسم"
-                className="w-full border border-gray-200 rounded-lg p-3 text-sm mb-2"
-            />
-
-            <div className="flex gap-2 mb-2">
-                {/*<button*/}
-                {/*    onClick={useMyLocation}*/}
-                {/*    className="w-16 shrink-0 rounded-lg bg-orange-500 text-white text-xs font-bold flex flex-col items-center justify-center"*/}
-                {/*>*/}
-                {/*    📍 {locating ? '...' : 'مكاني'}*/}
-                {/*</button>*/}
-                {/*<select*/}
-                {/*    value={area}*/}
-                {/*    onChange={(e) => setCustomerField('area', e.target.value)}*/}
-                {/*    className="flex-1 border border-gray-200 rounded-lg p-3 text-sm"*/}
-                {/*>*/}
-                {/*    <option value="">من فضلك اختار المنطقه</option>*/}
-                {/*    {AREAS.map((a) => <option key={a} value={a}>{a}</option>)}*/}
-                {/*</select>*/}
-            </div>
-
-            <input
-                type="text"
-                value={address}
-                onChange={(e) => setCustomerField('address', e.target.value)}
-                placeholder="العنوان"
-                className="w-full border border-gray-200 rounded-lg p-3 text-sm mb-2"
-            />
-
-            <input
-                type="email"
-                value={email}
-                onChange={(e) => setCustomerField('email', e.target.value)}
-                placeholder="الايميل"
-                className="w-full border border-gray-200 rounded-lg p-3 text-sm mb-2"
-            />
-
-            <label className="flex items-center gap-2 text-xs text-gray-600">
+            <label className="flex items-center gap-2 text-xs text-gray-600 mt-4 cursor-pointer select-none">
                 <input
                     type="checkbox"
                     checked={rememberMe}
                     onChange={(e) => setCustomerField('rememberMe', e.target.checked)}
+                    className="w-4 h-4 rounded border-gray-300 text-emerald-700 accent-emerald-700 focus:ring-emerald-600 cursor-pointer"
                 />
-                الاحتفاظ بالبيانات الشخصية لاستخدمها في المره القادمه
+                الاحتفاظ بالبيانات الشخصية لاستخدامها في المرة القادمة
             </label>
         </div>
     )

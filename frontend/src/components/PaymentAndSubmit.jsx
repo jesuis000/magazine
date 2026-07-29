@@ -124,9 +124,8 @@ function PaymentAndSubmit() {
             <button
                 onClick={handleSubmit}
                 disabled={submitting}
-                className="w-full h-12 rounded-lg bg-green-700 text-white font-bold flex items-center justify-center gap-2 disabled:opacity-60"
-            >
-                {submitting ? 'جاري الإرسال...' : 'ارسل'} ✈️
+                className="w-full h-12 rounded-lg bg-[#00764D] text-white font-bold flex items-center justify-center gap-2 disabled:opacity-60 transition-colors hover:bg-[#006643]"            >
+                ✈️ {submitting ? 'جاري الإرسال...' : 'ارسل'}
             </button>
         </div>
     )

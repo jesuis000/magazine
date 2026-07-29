@@ -1,10 +1,9 @@
 @import "tailwindcss";
 
-* {
-  box-sizing: border-box;
+@theme {
+  --font-sans: 'Tajawal', sans-serif;
 }
 
 body {
-  margin: 0;
-  font-family: 'Cairo', system-ui, sans-serif; /* or whatever you pick for Arabic/RTL */
+  font-family: var(--font-sans);
 }

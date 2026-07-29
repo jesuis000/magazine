@@ -107,7 +107,7 @@ function ProductCard({product}) {
                     >
                         <button
                             onClick={() => setImagePreviewOpen(false)}
-                            className="absolute -top-3 -right-3 bg-white text-gray-700 text-lg w-9 h-9 rounded-full shadow-md flex items-center justify-center"
+                            className="absolute -top-3 -left-3 bg-white text-gray-700 text-lg w-9 h-9 rounded-full shadow-md flex items-center justify-center"
                             aria-label="إغلاق"
                         >
                             ✕
