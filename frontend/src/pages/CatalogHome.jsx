@@ -1,40 +1,40 @@
-import { useParams, Link } from 'react-router-dom'
-import { useQuery } from '@tanstack/react-query'
-import { fetchStore } from '../api/stores'
-import { fetchBanners } from '../api/banners'
-import { fetchCategories } from '../api/categories'
+import {useParams, Link} from 'react-router-dom'
+import {useQuery} from '@tanstack/react-query'
+import {fetchStore} from '../api/stores'
+import {fetchBanners} from '../api/banners'
+import {fetchCategories} from '../api/categories'
 import BannerCarousel from '../components/BannerCarousel.jsx'
 import OrderButton from '../components/OrderButton'
 import CartSummary from '../components/CartSummary'
 
-import { useState, useEffect, useMemo, useDeferredValue } from 'react'
+import {useState, useEffect, useMemo, useDeferredValue} from 'react'
 import CategorySelector from '../components/CategorySelector'
 import ProductGrid from '../components/ProductGrid'
 
-import { fetchProducts } from '../api/products'
+import {fetchProducts} from '../api/products'
 import ProductCard from '../components/ProductCard'
-import { Search, X, ArrowRight } from 'lucide-react'
+import {Search, X, ArrowRight} from 'lucide-react'
 
 function CatalogHome() {
-    const { storeSlug } = useParams()
+    const {storeSlug} = useParams()
     const [cartOpen, setCartOpen] = useState(false)
     const [searchTerm, setSearchTerm] = useState('')
 
     const deferredSearchTerm = useDeferredValue(searchTerm)
     const isSearching = deferredSearchTerm.trim().length > 0
 
-    const { data: store, isLoading: storeLoading, isError: storeError } = useQuery({
+    const {data: store, isLoading: storeLoading, isError: storeError} = useQuery({
         queryKey: ['store', storeSlug],
         queryFn: () => fetchStore(storeSlug),
     })
 
-    const { data: banners } = useQuery({
+    const {data: banners} = useQuery({
         queryKey: ['banners', storeSlug],
         queryFn: () => fetchBanners(storeSlug),
         enabled: !!store,
     })
 
-    const { data: categories } = useQuery({
+    const {data: categories} = useQuery({
         queryKey: ['categories', storeSlug],
         queryFn: () => fetchCategories(storeSlug),
         enabled: !!store,
@@ -48,7 +48,7 @@ function CatalogHome() {
         }
     }, [categories, activeCategoryId])
 
-    const { data: allProducts, isLoading: searchLoading } = useQuery({
+    const {data: allProducts, isLoading: searchLoading} = useQuery({
         queryKey: ['products', storeSlug, 'all'],
         queryFn: () => fetchProducts(storeSlug),
         enabled: !!store && isSearching,
@@ -82,12 +82,14 @@ function CatalogHome() {
                                 src={store.logoUrl}
                                 alt={store.name}
                                 className="w-12 h-12 sm:w-14 sm:h-14 rounded-full object-cover border border-gray-200 shadow-sm shrink-0"
-                                onError={(e) => { e.target.style.display = 'none' }}
+                                onError={(e) => {
+                                    e.target.style.display = 'none'
+                                }}
                             />
                         ) : (
                             <div
                                 className="w-12 h-12 sm:w-14 sm:h-14 rounded-full flex items-center justify-center text-white font-extrabold text-lg shadow-sm shrink-0"
-                                style={{ backgroundColor: themeColor }}
+                                style={{backgroundColor: themeColor}}
                             >
                                 {store.name?.charAt(0)}
                             </div>
@@ -97,8 +99,9 @@ function CatalogHome() {
                             <h1 className="text-xl sm:text-2xl font-extrabold text-gray-900 leading-tight">
                                 مجلة {store.name}
                             </h1>
-                            <Link to="/" className="text-xs text-gray-400 hover:text-emerald-700 inline-flex items-center gap-1 transition-colors mt-0.5">
-                                <ArrowRight className="w-3 h-3" />
+                            <Link to="/"
+                                  className="text-xs text-gray-400 hover:text-emerald-700 inline-flex items-center gap-1 transition-colors mt-0.5">
+                                <ArrowRight className="w-3 h-3"/>
                                 <span>كل المتاجر</span>
                             </Link>
                         </div>
@@ -107,13 +110,15 @@ function CatalogHome() {
 
                 {/* Banner Section */}
                 <div className="mt-4 rounded-2xl overflow-hidden shadow-sm border border-gray-100 bg-white">
-                    <BannerCarousel banners={banners} />
+                    <BannerCarousel banners={banners}/>
                 </div>
 
                 {/* Search Bar Container */}
-                <div className="sticky top-0 z-30 bg-gray-50/95 backdrop-blur-md border-b border-gray-200/50 shadow-sm py-3 -mx-4 px-4 sm:-mx-6 sm:px-6 my-2 transition-all">
+                <div
+                    className="sticky top-0 z-30 bg-gray-50/95 backdrop-blur-md border-b border-gray-200/50 shadow-sm py-3 -mx-4 px-4 sm:-mx-6 sm:px-6 my-2 transition-all">
                     <div className="relative max-w-xl mx-auto">
-                        <Search className="absolute right-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400 pointer-events-none" />
+                        <Search
+                            className="absolute right-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400 pointer-events-none"/>
                         <input
                             type="text"
                             value={searchTerm}
@@ -126,7 +131,7 @@ function CatalogHome() {
                                 onClick={() => setSearchTerm('')}
                                 className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 rounded-full bg-gray-100 flex items-center justify-center text-gray-500"
                             >
-                                <X className="w-3 h-3" />
+                                <X className="w-3 h-3"/>
                             </button>
                         )}
                     </div>
@@ -142,11 +147,12 @@ function CatalogHome() {
                                 تم العثور على {searchResults.length} نتيجة لـ «{deferredSearchTerm.trim()}»
                             </p>
                             <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4">
-                                {searchResults.map((p) => <ProductCard key={p.id} product={p} />)}
+                                {searchResults.map((p) => <ProductCard key={p.id} product={p}/>)}
                             </div>
                         </>
                     ) : (
-                        <div className="text-gray-400 text-sm py-12 text-center bg-white rounded-2xl border border-gray-100 my-4">
+                        <div
+                            className="text-gray-400 text-sm py-12 text-center bg-white rounded-2xl border border-gray-100 my-4">
                             لا توجد نتائج لـ «{deferredSearchTerm.trim()}» — جرّب كلمة أخرى
                         </div>
                     )
@@ -158,19 +164,45 @@ function CatalogHome() {
                             onSelect={setActiveCategoryId}
                         />
                         {activeCategoryId && (
-                            <ProductGrid storeSlug={storeSlug} categoryId={activeCategoryId === 'all' ? null : activeCategoryId} />
+                            <ProductGrid storeSlug={storeSlug}
+                                         categoryId={activeCategoryId === 'all' ? null : activeCategoryId}/>
                         )}
                     </>
                 )}
 
-                {/* Footer Meta */}
-                <div className="pt-12 pb-6 text-center border-t border-gray-100 mt-8">
-                    <p className="text-gray-400 text-xs font-medium">العملة: {store.currency || 'EGP'}</p>
-                </div>
+                {/* Modern Centered Footer */}
+                {/* Modern Centered Footer */}
+                {/* Modern Centered Footer with Strict BiDi Isolation */}
+                {/* Modern Centered Footer */}
+                {/* Modern Centered Footer */}
+                {/* Modern Centered Footer */}
+                <footer className="pt-8 pb-24 text-center border-t border-gray-100 mt-12 bg-white/50" dir="rtl">
+                    <div className="max-w-md mx-auto px-4 flex flex-col items-center justify-center gap-2 text-xs text-gray-400 font-medium">
+
+                        {/* 1. Copyright Line */}
+                        <p className="text-gray-500">
+                            <span className="font-bold text-gray-700">{store?.name || 'عروض منوف الحصرية'}</span>
+                            <span className="mx-1">©</span>
+                            <span dir="ltr" className="inline-block font-semibold">{new Date().getFullYear()}</span>
+                            <span>. جميع الحقوق محفوظة.</span>
+                        </p>
+
+                        {/* 2. Tax & Currency Info - Natural Inline Flow */}
+                        <p className="text-[11px] text-gray-400">
+                            <span>الأسعار تشمل ضريبة المبيعات</span>
+                            <span className="mx-2 text-gray-300">•</span>
+                            <span>العملة:&nbsp;</span>
+                            <span dir="ltr" className="font-bold text-gray-600 inline-block">
+                                {store?.currency || 'EGP'}
+                            </span>
+                        </p>
+
+                    </div>
+                </footer>
             </div>
 
-            <OrderButton onClick={() => setCartOpen(true)} />
-            {cartOpen && <CartSummary store={store} onClose={() => setCartOpen(false)} />}
+            <OrderButton onClick={() => setCartOpen(true)}/>
+            {cartOpen && <CartSummary store={store} onClose={() => setCartOpen(false)}/>}
         </div>
     )
 }
