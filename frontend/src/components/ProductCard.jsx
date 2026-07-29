@@ -1,10 +1,11 @@
 import {useState} from 'react'
 import {useCartStore} from '../store/cartStore'
 import QuantityKeypadModal from './QuantityKeypadModal'
+import ProductDetailModal from './ProductDetailModal'
 
 function ProductCard({product}) {
     const [modalOpen, setModalOpen] = useState(false)
-    const [imagePreviewOpen, setImagePreviewOpen] = useState(false)
+    const [detailOpen, setDetailOpen] = useState(false)
     const [isZooming, setIsZooming] = useState(false)
     const [zoomPos, setZoomPos] = useState({x: 50, y: 50})
     const qty = useCartStore((s) => s.getQty(product.id))
@@ -30,7 +31,7 @@ function ProductCard({product}) {
 
             <div className="relative group">
                 <div
-                    onClick={() => product.image && setImagePreviewOpen(true)}
+                    onClick={() => setDetailOpen(true)}
                     onMouseEnter={() => setIsZooming(true)}
                     onMouseLeave={() => setIsZooming(false)}
                     onMouseMove={handleMouseMove}
@@ -58,7 +59,12 @@ function ProductCard({product}) {
                 )}
             </div>
 
-            <div className="text-xs font-bold min-h-[34px]">{product.name}</div>
+            <div
+                onClick={() => setDetailOpen(true)}
+                className="text-xs font-bold min-h-[34px] cursor-pointer"
+            >
+                {product.name}
+            </div>
 
             <div className="text-sm font-extrabold mb-2">
                 {hasDiscount ? (
@@ -86,48 +92,20 @@ function ProductCard({product}) {
                 </button>
             </div>
 
-            {modalOpen && (
-                <QuantityKeypadModal
+            {/*{modalOpen && (*/}
+            {/*    <QuantityKeypadModal*/}
+            {/*        product={product}*/}
+            {/*        initialQty={qty}*/}
+            {/*        onConfirm={(newQty) => setQty(product, newQty)}*/}
+            {/*        onClose={() => setModalOpen(false)}*/}
+            {/*    />*/}
+            {/*)}*/}
+
+            {detailOpen && (
+                <ProductDetailModal
                     product={product}
-                    initialQty={qty}
-                    onConfirm={(newQty) => setQty(product, newQty)}
-                    onClose={() => setModalOpen(false)}
+                    onClose={() => setDetailOpen(false)}
                 />
-            )}
-
-            {/* Mobile/tap full-screen preview */}
-            {imagePreviewOpen && (
-                <div
-                    className="fixed inset-0 bg-black/80 flex items-center justify-center z-[100] p-4"
-                    onClick={() => setImagePreviewOpen(false)}
-                >
-                    <div
-                        className="bg-white rounded-2xl p-4 w-[90vw] max-w-md aspect-square flex flex-col items-center justify-center relative"
-                        onClick={(e) => e.stopPropagation()}
-                    >
-                        <button
-                            onClick={() => setImagePreviewOpen(false)}
-                            className="absolute -top-3 -left-3 bg-white text-gray-700 text-lg w-9 h-9 rounded-full shadow-md flex items-center justify-center"
-                            aria-label="إغلاق"
-                        >
-                            ✕
-                        </button>
-                        <img
-                            src={product.image}
-                            alt={product.name}
-                            className="max-w-full max-h-[75%] object-contain"
-                        />
-                        <div className="mt-3 max-w-xs mx-auto text-center">
-                            <p className="text-sm font-bold text-gray-900">{product.name}</p>
-
-                            {product.description && (
-                                <p className="mt-1.5 text-[13px] text-gray-500 leading-relaxed text-right">
-                                    {product.description}
-                                </p>
-                            )}
-                        </div>
-                    </div>
-                </div>
             )}
         </div>
     )
