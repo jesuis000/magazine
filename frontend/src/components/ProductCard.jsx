@@ -1,54 +1,59 @@
-import {useState} from 'react'
-import {useCartStore} from '../store/cartStore'
-import QuantityKeypadModal from './QuantityKeypadModal'
+import { useState } from 'react'
+import { useCartStore } from '../store/cartStore'
 import ProductDetailModal from './ProductDetailModal'
+import { Plus, Minus } from 'lucide-react'
 
-function ProductCard({product}) {
-    const [modalOpen, setModalOpen] = useState(false)
+function ProductCard({ product }) {
     const [detailOpen, setDetailOpen] = useState(false)
     const [isZooming, setIsZooming] = useState(false)
-    const [zoomPos, setZoomPos] = useState({x: 50, y: 50})
+    const [zoomPos, setZoomPos] = useState({ x: 50, y: 50 })
+
     const qty = useCartStore((s) => s.getQty(product.id))
     const setQty = useCartStore((s) => s.setQty)
 
     const hasDiscount = product.discountPrice != null
+    const displayPrice = hasDiscount ? product.discountPrice : product.price
 
     const handleMouseMove = (e) => {
-        const {left, top, width, height} = e.currentTarget.getBoundingClientRect()
+        const { left, top, width, height } = e.currentTarget.getBoundingClientRect()
         const x = ((e.clientX - left) / width) * 100
         const y = ((e.clientY - top) / height) * 100
-        setZoomPos({x, y})
+        setZoomPos({ x, y })
     }
 
     return (
-        <div className="border border-gray-200 rounded-lg p-2.5 relative">
+        <div className="bg-white border border-gray-200/80 rounded-2xl p-3 relative flex flex-col justify-between shadow-sm hover:shadow-md transition-all duration-200 group">
+            {/* Discount Badge */}
             {hasDiscount && (
-                <span
-                    className="absolute top-2 right-2 bg-red-600 text-white text-[10px] font-bold rounded px-1.5 py-0.5">
-                    SALE
+                <span className="absolute top-3 right-3 z-10 bg-red-600 text-white text-[10px] font-bold rounded-lg px-2 py-0.5 shadow-sm">
+                    خصم
                 </span>
             )}
 
-            <div className="relative group">
+            {/* Image Frame with Zoom */}
+            <div className="relative mb-3">
                 <div
                     onClick={() => setDetailOpen(true)}
                     onMouseEnter={() => setIsZooming(true)}
                     onMouseLeave={() => setIsZooming(false)}
                     onMouseMove={handleMouseMove}
-                    className="aspect-square rounded-lg bg-gray-50 flex items-center justify-center mb-2 overflow-hidden cursor-zoom-in p-2"
+                    className="w-full h-40 bg-gray-50/60 rounded-xl flex items-center justify-center overflow-hidden cursor-pointer p-2 transition-colors hover:bg-gray-100/60"
                 >
                     {product.image ? (
-                        <img src={product.image} alt={product.name} className="max-w-full max-h-full object-contain"/>
+                        <img
+                            src={product.image}
+                            alt={product.name}
+                            className="max-h-full max-w-full object-contain drop-shadow-sm transition-transform duration-200 group-hover:scale-105"
+                        />
                     ) : (
-                        <span className="text-gray-400 text-xs">product photo</span>
+                        <span className="text-gray-400 text-xs font-medium">صورة المنتج</span>
                     )}
                 </div>
 
-                {/* Desktop magnifier lens — replaces the old full-image hover preview */}
+                {/* Magnifier Lens */}
                 {product.image && isZooming && (
                     <div
-                        className="hidden sm:block absolute z-50 left-1/2 -translate-x-1/2 bottom-full mb-2
-                       w-56 h-56 bg-white rounded-lg shadow-xl border border-gray-200 pointer-events-none"
+                        className="hidden sm:block absolute z-50 left-1/2 -translate-x-1/2 bottom-full mb-2 w-52 h-52 bg-white rounded-xl shadow-2xl border border-gray-200 pointer-events-none"
                         style={{
                             backgroundImage: `url(${product.image})`,
                             backgroundRepeat: 'no-repeat',
@@ -59,48 +64,54 @@ function ProductCard({product}) {
                 )}
             </div>
 
-            <div
-                onClick={() => setDetailOpen(true)}
-                className="text-xs font-bold min-h-[34px] cursor-pointer"
-            >
-                {product.name}
+            {/* Content Section */}
+            <div className="flex-1 flex flex-col justify-between">
+                <div
+                    onClick={() => setDetailOpen(true)}
+                    className="cursor-pointer mb-2"
+                >
+                    <h3 className="text-xs sm:text-sm font-bold text-gray-800 line-clamp-2 leading-snug hover:text-[#00764D] transition-colors min-h-[2rem]">
+                        {product.name}
+                    </h3>
+                </div>
+
+                {/* Pricing Display */}
+                <div className="flex items-center gap-1.5 mb-3">
+                    <span className="text-sm font-extrabold text-[#8B1E1E]" dir="ltr">
+                        {displayPrice} <span className="text-[10px] font-bold">ج.م</span>
+                    </span>
+                    {hasDiscount && (
+                        <span className="text-xs text-gray-400 line-through font-normal" dir="ltr">
+                            {product.price}
+                        </span>
+                    )}
+                </div>
+
+                {/* Inline Stepper Bar */}
+                <div className="bg-[#00764D] rounded-xl text-white flex items-center justify-between p-1 shadow-sm">
+                    <button
+                        onClick={() => setQty(product, qty + 1)}
+                        className="w-8 h-8 rounded-lg hover:bg-white/10 active:bg-white/20 flex items-center justify-center transition-colors"
+                        aria-label="زيادة الكمية"
+                    >
+                        <Plus className="w-4 h-4" />
+                    </button>
+
+                    <span className="font-extrabold text-xs sm:text-sm px-2">
+                        {qty}
+                    </span>
+
+                    <button
+                        onClick={() => setQty(product, Math.max(0, qty - 1))}
+                        className="w-8 h-8 rounded-lg hover:bg-white/10 active:bg-white/20 flex items-center justify-center transition-colors"
+                        aria-label="إنقاص الكمية"
+                    >
+                        <Minus className="w-4 h-4" />
+                    </button>
+                </div>
             </div>
 
-            <div className="text-sm font-extrabold mb-2">
-                {hasDiscount ? (
-                    <>
-                        <span className="text-red-600">{product.discountPrice}</span>{' '}
-                        <span className="line-through text-gray-400 text-xs font-normal">{product.price}</span>
-                    </>
-                ) : (
-                    product.price
-                )}
-                <span className="text-[10px] text-gray-400 font-semibold mr-1">جم</span>
-            </div>
-
-            <div className="flex items-center justify-between bg-[#0d4d43] rounded-md h-9 text-white overflow-hidden">
-                <button onClick={() => setQty(product, Math.max(0, qty - 1))}
-                        className="w-9 h-full flex items-center justify-center text-lg">
-                    −
-                </button>
-                <button onClick={() => setModalOpen(true)} className="font-bold font-mono flex-1 text-center">
-                    {qty}
-                </button>
-                <button onClick={() => setQty(product, qty + 1)}
-                        className="w-9 h-full flex items-center justify-center text-lg">
-                    +
-                </button>
-            </div>
-
-            {/*{modalOpen && (*/}
-            {/*    <QuantityKeypadModal*/}
-            {/*        product={product}*/}
-            {/*        initialQty={qty}*/}
-            {/*        onConfirm={(newQty) => setQty(product, newQty)}*/}
-            {/*        onClose={() => setModalOpen(false)}*/}
-            {/*    />*/}
-            {/*)}*/}
-
+            {/* Detail Modal */}
             {detailOpen && (
                 <ProductDetailModal
                     product={product}

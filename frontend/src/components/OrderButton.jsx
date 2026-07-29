@@ -1,4 +1,5 @@
 import { useCartStore } from '../store/cartStore'
+import {ShoppingCart} from 'lucide-react';
 
 function OrderButton({ onClick }) {
     const items = useCartStore((s) => s.items)
@@ -11,12 +12,13 @@ function OrderButton({ onClick }) {
     return (
         <button
             onClick={onClick}
-            className="fixed bottom-4 left-1/2 -translate-x-1/2 z-40 bg-blue-600 text-white font-bold rounded-full px-6 h-12 shadow-lg flex items-center gap-2"
+            className="fixed bottom-5 left-1/2 -translate-x-1/2 z-40 bg-[#00764D] hover:bg-[#006643] text-white font-bold px-6 py-3 rounded-full shadow-lg hover:shadow-xl transition-all flex items-center gap-2 active:scale-95"
         >
-            🛒 اوردر
-            <span className="bg-white text-blue-600 rounded-full w-6 h-6 flex items-center justify-center text-xs font-extrabold">
+            <ShoppingCart className="w-5 h-5" />
+            <span>عرض السلة</span>
+            <span className="bg-white text-[#00764D] text-xs font-black w-5 h-5 rounded-full flex items-center justify-center mr-1">
         {totalQty}
-      </span>
+    </span>
         </button>
     )
 }

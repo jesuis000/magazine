@@ -13,13 +13,13 @@ import ProductGrid from '../components/ProductGrid'
 
 import { fetchProducts } from '../api/products'
 import ProductCard from '../components/ProductCard'
+import { Search, X, ArrowRight } from 'lucide-react'
 
 function CatalogHome() {
     const { storeSlug } = useParams()
     const [cartOpen, setCartOpen] = useState(false)
     const [searchTerm, setSearchTerm] = useState('')
 
-    // Smooths out the filtering as someone types, without adding any real delay to the response
     const deferredSearchTerm = useDeferredValue(searchTerm)
     const isSearching = deferredSearchTerm.trim().length > 0
 
@@ -54,7 +54,6 @@ function CatalogHome() {
         enabled: !!store && isSearching,
     })
 
-    // The only fields listed here get searched — add more later just by adding to this array
     const SEARCHABLE_PRODUCT_FIELDS = ['name', 'description']
 
     const searchResults = useMemo(() => {
@@ -67,76 +66,87 @@ function CatalogHome() {
         )
     }, [allProducts, deferredSearchTerm, isSearching])
 
-    if (storeLoading) return <div className="p-4 text-gray-400">Loading store…</div>
-    if (storeError || !store) return <div className="p-4 text-red-500">Store not found.</div>
+    if (storeLoading) return <div className="p-8 text-center text-gray-400 font-medium">جاري تحميل المتجر...</div>
+    if (storeError || !store) return <div className="p-8 text-center text-red-500 font-medium">المتجر غير موجود.</div>
+
+    const themeColor = store.themeColor || '#00764D'
 
     return (
-        <div dir="rtl" className="min-h-screen bg-gray-50">
-            <div className="max-w-[1200px] mx-auto px-4 sm:px-6 lg:px-8">
-                <header className="flex flex-row items-center justify-between gap-3 py-4 md:py-6 text-right">
-                    <Link to="/" className="block">
-                        <h1 className="text-lg sm:text-xl md:text-3xl font-extrabold" style={{ color: store.themeColor }}>
-                            مجلة {store.name}
-                        </h1>
-                        <p className="text-[11px] sm:text-xs md:text-sm text-gray-400 flex items-center gap-1">
-                            <span>←</span> كل المتاجر
-                        </p>
-                    </Link>
+        <div dir="rtl" className="min-h-screen bg-gray-50/50 pb-12">
+            <div className="max-w-5xl mx-auto px-4 sm:px-6">
+                {/* Modern Brand Header */}
+                <header className="flex items-center justify-between gap-4 py-4 md:py-6 border-b border-gray-100">
+                    <div className="flex items-center gap-3">
+                        {store.logoUrl ? (
+                            <img
+                                src={store.logoUrl}
+                                alt={store.name}
+                                className="w-12 h-12 sm:w-14 sm:h-14 rounded-full object-cover border border-gray-200 shadow-sm shrink-0"
+                                onError={(e) => { e.target.style.display = 'none' }}
+                            />
+                        ) : (
+                            <div
+                                className="w-12 h-12 sm:w-14 sm:h-14 rounded-full flex items-center justify-center text-white font-extrabold text-lg shadow-sm shrink-0"
+                                style={{ backgroundColor: themeColor }}
+                            >
+                                {store.name?.charAt(0)}
+                            </div>
+                        )}
 
-                    {store.logoUrl ? (
-                        <img
-                            src={store.logoUrl}
-                            alt={store.name}
-                            className="w-10 h-10 sm:w-12 sm:h-12 md:w-16 md:h-16 rounded-full object-cover border border-gray-200 shrink-0"
-                            onError={(e) => { e.target.style.display = 'none' }}
-                        />
-                    ) : (
-                        <div
-                            className="w-10 h-10 sm:w-12 sm:h-12 md:w-16 md:h-16 rounded-full flex items-center justify-center text-white font-bold shrink-0"
-                            style={{ backgroundColor: store.themeColor || '#999' }}
-                        >
-                            {store.name?.charAt(0)}
+                        <div>
+                            <h1 className="text-xl sm:text-2xl font-extrabold text-gray-900 leading-tight">
+                                مجلة {store.name}
+                            </h1>
+                            <Link to="/" className="text-xs text-gray-400 hover:text-emerald-700 inline-flex items-center gap-1 transition-colors mt-0.5">
+                                <ArrowRight className="w-3 h-3" />
+                                <span>كل المتاجر</span>
+                            </Link>
                         </div>
-                    )}
+                    </div>
                 </header>
 
-                <BannerCarousel banners={banners} />
+                {/* Banner Section */}
+                <div className="mt-4 rounded-2xl overflow-hidden shadow-sm border border-gray-100 bg-white">
+                    <BannerCarousel banners={banners} />
+                </div>
 
-                <div className="sticky top-0 z-30 bg-gray-50 pt-2 pb-1 -mx-4 px-4 sm:-mx-6 sm:px-6 lg:-mx-8 lg:px-8">
-                    <div className="relative">
+                {/* Search Bar Container */}
+                <div className="sticky top-0 z-30 bg-gray-50/95 backdrop-blur-md border-b border-gray-200/50 shadow-sm py-3 -mx-4 px-4 sm:-mx-6 sm:px-6 my-2 transition-all">
+                    <div className="relative max-w-xl mx-auto">
+                        <Search className="absolute right-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400 pointer-events-none" />
                         <input
                             type="text"
                             value={searchTerm}
                             onChange={(e) => setSearchTerm(e.target.value)}
-                            placeholder="ابحث عن منتج... 🔍"
-                            className="w-full h-11 px-4 bg-white border border-gray-200 rounded-lg text-sm text-gray-800 focus:outline-none focus:border-emerald-600"
+                            placeholder="ابحث عن منتج..."
+                            className="w-full h-10 pr-10 pl-10 bg-white border border-gray-200 rounded-2xl text-sm text-gray-800 focus:outline-none focus:border-[#00764D] focus:ring-1 focus:ring-[#00764D] shadow-sm transition-all"
                         />
                         {isSearching && (
                             <button
                                 onClick={() => setSearchTerm('')}
-                                className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 text-lg"
-                                aria-label="مسح البحث"
+                                className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 rounded-full bg-gray-100 flex items-center justify-center text-gray-500"
                             >
-                                ✕
+                                <X className="w-3 h-3" />
                             </button>
                         )}
                     </div>
                 </div>
 
+                {/* Search Results vs Categories */}
                 {isSearching ? (
                     searchLoading ? (
-                        <div className="text-gray-400 text-sm py-6">جاري البحث…</div>
+                        <div className="text-gray-400 text-sm py-12 text-center">جاري البحث…</div>
                     ) : searchResults.length ? (
                         <>
-                            <p className="text-xs text-gray-400 mt-3">
-                                {searchResults.length} نتيجة لـ «{deferredSearchTerm.trim()}»
+                            <p className="text-xs text-gray-400 mb-4 px-1">
+                                تم العثور على {searchResults.length} نتيجة لـ «{deferredSearchTerm.trim()}»
                             </p>
-                            <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 justify-items-center sm:justify-items-stretch">
+                            <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4">
                                 {searchResults.map((p) => <ProductCard key={p.id} product={p} />)}
                             </div>
                         </>
                     ) : (
-                        <div className="text-gray-400 text-sm py-6 text-center">
+                        <div className="text-gray-400 text-sm py-12 text-center bg-white rounded-2xl border border-gray-100 my-4">
                             لا توجد نتائج لـ «{deferredSearchTerm.trim()}» — جرّب كلمة أخرى
                         </div>
                     )
@@ -153,14 +163,14 @@ function CatalogHome() {
                     </>
                 )}
 
-                <div className="py-6 text-center">
-                    <p className="text-gray-400 text-xs">Currency: {store.currency}</p>
+                {/* Footer Meta */}
+                <div className="pt-12 pb-6 text-center border-t border-gray-100 mt-8">
+                    <p className="text-gray-400 text-xs font-medium">العملة: {store.currency || 'EGP'}</p>
                 </div>
             </div>
 
             <OrderButton onClick={() => setCartOpen(true)} />
             {cartOpen && <CartSummary store={store} onClose={() => setCartOpen(false)} />}
-
         </div>
     )
 }

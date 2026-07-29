@@ -4,7 +4,7 @@ function CategorySelector({ categories, activeCategoryId, onSelect }) {
     if (!categories || categories.length === 0) return null
 
     return (
-        <div className="flex flex-row-reverse flex-wrap justify-center gap-4 sm:gap-6 mt-4 mb-6">
+        <div className="flex flex-row-reverse flex-wrap items-center justify-center gap-4 sm:gap-6 my-6 px-2">
             <CategorySlice
                 category={{ id: 'all', name: 'الكل' }}
                 isAll
