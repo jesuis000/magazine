@@ -4,7 +4,7 @@ import { useCheckoutStore } from '../store/checkoutStore'
 import CustomerInfoForm from './CustomerInfoForm'
 import PaymentAndSubmit from './PaymentAndSubmit'
 import OrderSuccess from './OrderSuccess'
-import { Printer, Pencil, Plus, Minus, Trash2, Check } from 'lucide-react'
+import { Printer, Pencil, Plus, Minus, Trash2, Check, ShoppingCart  } from 'lucide-react'
 import NotesSection from './NotesSection'
 
 const DELIVERY_FEE = 10
@@ -60,7 +60,28 @@ function CartSummary({ onClose, store }) {
                     {orderSubmitted ? (
                         <OrderSuccess onClose={onClose} />
                     ) : itemCount === 0 ? (
-                        <p className="text-gray-400 text-center py-12 text-sm font-medium">السلة فارغة</p>
+                        <div className="flex flex-col items-center justify-center py-10 px-4 text-center">
+                            {/* Soft Icon Circle */}
+                            <div className="w-16 h-16 bg-emerald-50 rounded-full flex items-center justify-center text-[#00764D] mb-4">
+                                <ShoppingCart className="w-8 h-8 opacity-80" />
+                            </div>
+
+                            {/* Primary & Secondary Text */}
+                            <h3 className="text-base font-bold text-gray-800 mb-1">
+                                سلة التسوق فارغة
+                            </h3>
+                            <p className="text-xs text-gray-400 mb-6 max-w-[220px]">
+                                لم تقم ببدء إضافة أي منتجات إلى السلة بعد
+                            </p>
+
+                            {/* Action Button to close and keep browsing */}
+                            <button
+                                onClick={onClose}
+                                className="h-10 px-6 bg-[#00764D] hover:bg-[#006643] text-white text-xs font-bold rounded-xl transition-colors shadow-sm"
+                            >
+                                تصفح العروض الآن
+                            </button>
+                        </div>
                     ) : (
                         <>
                             <table className="w-full text-[11.5px]">
