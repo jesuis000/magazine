@@ -6,7 +6,7 @@ function ProductGrid({ storeSlug, categoryId }) {
     const { data: products, isLoading } = useQuery({
         queryKey: ['products', storeSlug, categoryId],
         queryFn: () => fetchProducts(storeSlug, categoryId),
-        enabled: !!categoryId,
+        enabled: !!storeSlug,
     })
 
     if (isLoading) return <div className="text-gray-400 text-sm py-6">Loading products…</div>

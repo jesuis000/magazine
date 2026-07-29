@@ -148,7 +148,7 @@ function CatalogHome() {
                             onSelect={setActiveCategoryId}
                         />
                         {activeCategoryId && (
-                            <ProductGrid storeSlug={storeSlug} categoryId={activeCategoryId} />
+                            <ProductGrid storeSlug={storeSlug} categoryId={activeCategoryId === 'all' ? null : activeCategoryId} />
                         )}
                     </>
                 )}
