@@ -9,6 +9,7 @@ function ProductDetailModal({ product, onClose }) {
 
     const hasDiscount = product.discountPrice != null
     const displayPrice = hasDiscount ? product.discountPrice : product.price
+    const totalPrice = displayPrice * qty
 
     const handleAddToCart = () => {
         setQty(product, qty)
@@ -71,13 +72,19 @@ function ProductDetailModal({ product, onClose }) {
                         <div className="flex items-center gap-1 text-[#8B1E1E] font-extrabold text-base">
                             <span>السعر:</span>
                             <span dir="ltr" className="inline-block">
-                                {displayPrice} ج.م
+                                {totalPrice} ج.م
                             </span>
                         </div>
 
                         {hasDiscount && (
                             <div className="text-gray-400 line-through text-xs -mt-0.5" dir="ltr">
-                                {product.price} ج.م
+                                {product.price * qty} ج.م
+                            </div>
+                        )}
+
+                        {qty > 1 && (
+                            <div className="text-gray-400 text-[10px] -mt-0.5" dir="ltr">
+                                {qty} × {displayPrice} ج.م
                             </div>
                         )}
                     </div>
