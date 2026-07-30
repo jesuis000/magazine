@@ -1,19 +1,17 @@
-import { useCheckoutStore } from '../store/checkoutStore'
-import { Phone, User, MapPin, Mail } from 'lucide-react'
+import {useCheckoutStore} from '../store/checkoutStore'
+import {Phone, User, MapPin} from 'lucide-react'
 
 function CustomerInfoForm() {
     const phone = useCheckoutStore((s) => s.phone)
     const name = useCheckoutStore((s) => s.name)
     const address = useCheckoutStore((s) => s.address)
-    const email = useCheckoutStore((s) => s.email)
     const rememberMe = useCheckoutStore((s) => s.rememberMe)
     const setCustomerField = useCheckoutStore((s) => s.setCustomerField)
 
     const fields = [
-        { icon: Phone, type: 'tel', value: phone, key: 'phone', placeholder: 'رقم موبايل' },
-        { icon: User, type: 'text', value: name, key: 'name', placeholder: 'الاسم' },
-        { icon: MapPin, type: 'text', value: address, key: 'address', placeholder: 'العنوان' },
-        { icon: Mail, type: 'email', value: email, key: 'email', placeholder: 'الايميل' },
+        {icon: Phone, type: 'tel', value: phone, key: 'phone', placeholder: 'رقم موبايل'},
+        {icon: User, type: 'text', value: name, key: 'name', placeholder: 'الاسم'},
+        {icon: MapPin, type: 'text', value: address, key: 'address', placeholder: 'العنوان'},
     ]
 
     return (
@@ -21,9 +19,10 @@ function CustomerInfoForm() {
             <p className="font-bold text-sm text-gray-800 mb-3">بيانات التوصيل والشخصية</p>
 
             <div className="space-y-2.5">
-                {fields.map(({ icon: Icon, type, value, key, placeholder }) => (
+                {fields.map(({icon: Icon, type, value, key, placeholder}) => (
                     <div key={key} className="relative">
-                        <Icon className="absolute right-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400 pointer-events-none" />
+                        <Icon
+                            className="absolute right-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400 pointer-events-none"/>
                         <input
                             dir="rtl"
                             type={type}

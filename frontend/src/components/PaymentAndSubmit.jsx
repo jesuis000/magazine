@@ -36,7 +36,7 @@ function PaymentAndSubmit() {
     const {storeSlug} = useParams()
 
     const validate = () => {
-        if (!checkout.phone || !checkout.name ) {
+        if (!checkout.phone || !checkout.name) {
             return 'من فضلك أكمل بيانات التواصل أولاً'
         }
         // if (!checkout.phone || !checkout.name || !checkout.area) {
@@ -71,7 +71,6 @@ function PaymentAndSubmit() {
                 name: checkout.name,
                 area: checkout.area,
                 address: checkout.address,
-                email: checkout.email,
                 fulfillmentType: checkout.fulfillmentType.toUpperCase(),
                 deliverySlot: checkout.deliverySlot,
                 paymentMethod,
@@ -124,7 +123,7 @@ function PaymentAndSubmit() {
             <button
                 onClick={handleSubmit}
                 disabled={submitting}
-                className="w-full h-12 rounded-lg bg-[#00764D] text-white font-bold flex items-center justify-center gap-2 disabled:opacity-60 transition-colors hover:bg-[#006643]"            >
+                className="w-full h-12 rounded-lg bg-[#00764D] text-white font-bold flex items-center justify-center gap-2 disabled:opacity-60 transition-colors hover:bg-[#006643]">
                 ✈️ {submitting ? 'جاري الإرسال...' : 'ارسل'}
             </button>
         </div>

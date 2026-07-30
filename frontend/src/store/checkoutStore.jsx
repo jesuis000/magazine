@@ -8,7 +8,6 @@ export const useCheckoutStore = create((set) => ({
     name: '',
     area: '',
     address: '',
-    email: '',
     rememberMe: true,
 
     fulfillmentType: 'delivery', // 'delivery' | 'pickup'
@@ -44,7 +43,7 @@ export const useCheckoutStore = create((set) => ({
     // until the user closes the success screen (clearOrderSubmitted does that).
     reset: () => set({
         notesText: '', voiceNoteUrl: null,
-        phone: '', name: '', area: '', address: '', email: '', rememberMe: true,
+        phone: '', name: '', area: '', address: '', rememberMe: true,
         fulfillmentType: 'delivery', deliverySlot: null
     }),
 }))

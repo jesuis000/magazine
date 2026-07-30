@@ -1,6 +1,6 @@
-import { useState } from 'react'
-import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query'
-import { fetchOrders, fetchOrderDetail, updateOrderStatus } from '../../api/orders'
+import {useState} from 'react'
+import {useQuery, useMutation, useQueryClient} from '@tanstack/react-query'
+import {fetchOrders, fetchOrderDetail, updateOrderStatus} from '../../api/orders'
 
 const STATUS_LABELS = {
     PENDING: 'قيد الانتظار', CONFIRMED: 'مؤكد', PREPARING: 'جاري التجهيز',
@@ -12,20 +12,20 @@ const STATUS_COLORS = {
     DELIVERED: 'bg-green-100 text-green-700', CANCELLED: 'bg-red-100 text-red-700',
 }
 
-function OrdersTab({ storeSlug }) {
+function OrdersTab({storeSlug}) {
     const queryClient = useQueryClient()
-    const { data: orders } = useQuery({ queryKey: ['orders', storeSlug], queryFn: () => fetchOrders(storeSlug) })
+    const {data: orders} = useQuery({queryKey: ['orders', storeSlug], queryFn: () => fetchOrders(storeSlug)})
     const [expandedId, setExpandedId] = useState(null)
 
-    const { data: detail } = useQuery({
+    const {data: detail} = useQuery({
         queryKey: ['order-detail', storeSlug, expandedId],
         queryFn: () => fetchOrderDetail(storeSlug, expandedId),
         enabled: !!expandedId,
     })
 
     const statusMutation = useMutation({
-        mutationFn: ({ id, status }) => updateOrderStatus(storeSlug, id, status),
-        onSuccess: () => queryClient.invalidateQueries({ queryKey: ['orders', storeSlug] }),
+        mutationFn: ({id, status}) => updateOrderStatus(storeSlug, id, status),
+        onSuccess: () => queryClient.invalidateQueries({queryKey: ['orders', storeSlug]}),
     })
 
     if (!orders?.length) {
@@ -58,6 +58,19 @@ function OrdersTab({ storeSlug }) {
                                 العميل: {detail.customer?.name} · {detail.customer?.phone} · {detail.customer?.address}
                             </div>
 
+                            {(detail.order?.notes || detail.order?.voiceNoteUrl) && (
+                                <div className="bg-amber-50 border border-amber-200 rounded-lg p-2 mb-3">
+                                    <div className="text-[11px] font-bold text-amber-700 mb-1">ملاحظات العميل</div>
+                                    {detail.order?.notes && (
+                                        <div
+                                            className="text-xs text-gray-700 whitespace-pre-wrap">{detail.order.notes}</div>
+                                    )}
+                                    {detail.order?.voiceNoteUrl && (
+                                        <audio controls src={detail.order.voiceNoteUrl} className="w-full mt-2 h-8"/>
+                                    )}
+                                </div>
+                            )}
+
                             <table className="w-full text-xs mb-3">
                                 <tbody>
                                 {detail.items?.map((item) => (
@@ -74,7 +87,7 @@ function OrdersTab({ storeSlug }) {
                                 <label className="text-xs font-bold">تحديث الحالة:</label>
                                 <select
                                     value={o.status}
-                                    onChange={(e) => statusMutation.mutate({ id: o.id, status: e.target.value })}
+                                    onChange={(e) => statusMutation.mutate({id: o.id, status: e.target.value})}
                                     className="border border-gray-200 rounded-lg h-8 px-2 text-xs"
                                 >
                                     {Object.entries(STATUS_LABELS).map(([key, label]) => (
