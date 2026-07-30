@@ -49,7 +49,7 @@ public class SecurityConfig {
                 .csrf(csrf -> csrf
                         .csrfTokenRepository(csrfTokenRepository())
                         .csrfTokenRequestHandler(new CsrfTokenRequestAttributeHandler())
-                        .ignoringRequestMatchers("/api/auth/login")
+                        .ignoringRequestMatchers("/api/auth/login", "/api/stores/*/orders")
                 )
                 .addFilterAfter(new CsrfCookieFilter(), CsrfFilter.class)
                 .sessionManagement(sm -> sm.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
