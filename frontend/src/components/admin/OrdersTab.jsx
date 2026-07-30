@@ -58,16 +58,11 @@ function OrdersTab({storeSlug}) {
                                 العميل: {detail.customer?.name} · {detail.customer?.phone} · {detail.customer?.address}
                             </div>
 
-                            {(detail.order?.notes || detail.order?.voiceNoteUrl) && (
+                            {detail.order?.notes && (
                                 <div className="bg-amber-50 border border-amber-200 rounded-lg p-2 mb-3">
                                     <div className="text-[11px] font-bold text-amber-700 mb-1">ملاحظات العميل</div>
-                                    {detail.order?.notes && (
-                                        <div
-                                            className="text-xs text-gray-700 whitespace-pre-wrap">{detail.order.notes}</div>
-                                    )}
-                                    {detail.order?.voiceNoteUrl && (
-                                        <audio controls src={detail.order.voiceNoteUrl} className="w-full mt-2 h-8"/>
-                                    )}
+                                    <div
+                                        className="text-xs text-gray-700 whitespace-pre-wrap">{detail.order.notes}</div>
                                 </div>
                             )}
 

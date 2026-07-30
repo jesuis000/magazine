@@ -136,7 +136,6 @@ public class OrderService {
         order.setStoreId(store.getId());
         order.setCustomerId(customer.getId());
         order.setNotes(req.notesText);
-        order.setVoiceNoteUrl(req.voiceNoteUrl);
         order.setDeliveryType(req.fulfillmentType);
         order.setDeliveryTime(req.deliverySlot);
         order.setPaymentMethod(req.paymentMethod);

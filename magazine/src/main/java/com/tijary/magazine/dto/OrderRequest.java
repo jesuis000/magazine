@@ -13,7 +13,6 @@ public class OrderRequest {
     public String deliverySlot;
     public String paymentMethod;
     public String notesText;
-    public String voiceNoteUrl;
     public List<Item> items;
 
     public static class Item {

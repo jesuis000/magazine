@@ -27,7 +27,6 @@ public class Order {
     private Long customerId;
 
     private String notes;
-    private String voiceNoteUrl;
 
     private String deliveryType; // "PICKUP" | "DELIVERY"
     private String deliveryTime; // free text for now, e.g. "غداً صباحا"

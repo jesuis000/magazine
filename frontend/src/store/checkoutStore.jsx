@@ -2,7 +2,6 @@ import {create} from 'zustand'
 
 export const useCheckoutStore = create((set) => ({
     notesText: '',
-    voiceNoteUrl: null,
 
     phone: '',
     name: '',
@@ -21,8 +20,6 @@ export const useCheckoutStore = create((set) => ({
     lastOrderId: null,
 
     setNotesText: (text) => set({notesText: text}),
-    setVoiceNoteUrl: (url) => set({voiceNoteUrl: url}),
-    clearVoiceNote: () => set({voiceNoteUrl: null}),
 
     setCustomerField: (field, value) => set({[field]: value}),
     setCustomer: (customer) => set(customer),
@@ -42,7 +39,7 @@ export const useCheckoutStore = create((set) => ({
     // it's called right after a successful submit, and we need those to survive
     // until the user closes the success screen (clearOrderSubmitted does that).
     reset: () => set({
-        notesText: '', voiceNoteUrl: null,
+        notesText: '',
         phone: '', name: '', area: '', address: '', rememberMe: true,
         fulfillmentType: 'delivery', deliverySlot: null
     }),

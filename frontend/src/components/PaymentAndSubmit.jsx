@@ -75,7 +75,6 @@ function PaymentAndSubmit() {
                 deliverySlot: checkout.deliverySlot,
                 paymentMethod,
                 notesText: checkout.notesText,
-                voiceNoteUrl: checkout.voiceNoteUrl,
                 items: cartItems.map((i) => ({productId: i.productId, quantity: i.quantity})),
             })
         } catch (err) {
