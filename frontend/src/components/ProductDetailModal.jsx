@@ -59,7 +59,7 @@ function ProductDetailModal({ product, onClose }) {
                     )}
 
                     {product.description && (
-                        <p className="text-xs text-gray-500 leading-relaxed pt-1 max-w-xs mx-auto">
+                        <p className="text-xs text-gray-500 leading-relaxed pt-1 max-w-xs mx-auto whitespace-pre-line">
                             {product.description}
                         </p>
                     )}
