@@ -10,8 +10,8 @@ public class SpaForwardController {
     // /assets/index-abc123.js, /images/x.jpg, /favicon.ico are left alone)
     // and isn't under /api — everything else is a client-side route.
     @RequestMapping(value = {
-            "/{path:^(?!api|assets|images|uploads)[^\\.]*}",
-            "/{path:^(?!api|assets|images|uploads)[^\\.]*}/**"
+            "/{path:^(?!api|assets|images|uploads|icons)[^\\.]*}",
+            "/{path:^(?!api|assets|images|uploads|icons)[^\\.]*}/**"
     })
     public String forward() {
         return "forward:/index.html";
