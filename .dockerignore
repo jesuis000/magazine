@@ -6,3 +6,5 @@ magazine/data
 .idea
 **/*.iml
 **/.DS_Store
+frontend/dist
+magazine/src/main/resources/static/
